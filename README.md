@@ -6,3 +6,10 @@
 * Includes an entity component system
 * Includes a gamestate modifier
 * Working on a level editor
+
+## LIBRARIES USED
+
+* <a href="https://hump.readthedocs.io/en/latest/gamestate.html">hump.gamestate</a> --> GAMESTATE HANDLING 
+* <a href="https://hump.readthedocs.io/en/latest/camera.html">hump.camera</a>    --> CAMERA HANDLING
+* <a href="https://github.com/kikito/bump.lua">bump.lua</a>       --> COLLISION HANDLING
+

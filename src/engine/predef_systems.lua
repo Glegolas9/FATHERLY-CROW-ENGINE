@@ -23,8 +23,6 @@ return {
             EndColor()
 
         end, 
-        function(self, inst)
-            inst.components.transform.x = math.random(1, 100)
-        end
+        false
     )
 }

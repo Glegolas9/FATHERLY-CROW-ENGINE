@@ -24,18 +24,22 @@ local class = {
 
         local instance = setmetatable({}, self)
 
-        if not self.NO_REDO_COMPONENTS then
-            instance.components = {}
+        for i, v in pairs(self) do
 
-            for i, v in pairs(self.components) do
+            -- TODO: Optimize (also make it work for index.)
+            if type(v) == 'table' then
                 local new_table = {}
                 for index, value in pairs(v) do
                     new_table[index] = value
                 end
 
-                -- TODO: Optimize component retrieval system.
-                instance.components[i] = setmetatable(new_table, getmetatable(v))
+                if getmetatable(v) then
+                    setmetatable(new_table, getmetatable(v))
+                end
+
+                instance[i] = new_table
             end
+
         end
 
         if instance.init then

@@ -1,3 +1,9 @@
+-- [[ LIBS ]]
+Gamestate = require 'src.libs.gamestate'
+Gamestate.registerEvents()
+
+CameraManager = require 'src.libs.camera'
+
 -- [[ UTILS ]]
 require 'src.utils.memoise'
 require 'src.utils.drawing'
@@ -5,19 +11,17 @@ require 'src.utils.drawing'
 Class     = require 'src.utils.class'
 
 -- [[ MAIN ]]
+NewGamestate = require 'src.engine.gamestate'
+WorldManager = require 'src.engine.world'
 
-World = require 'src.engine.world'
-World:registerSystem('ShapeRenderer')
+-- [[ STATES ]]
+Menu  = NewGamestate{
+    World = WorldManager.new{
+        systems   = {Systems.ShapeRenderer};
+        instances = {Objects.Player:new()}; 
+    };
+}
 
-local instance_1 = World:create('Player', 100, 100)
+Game  = NewGamestate()
 
-
-function love.draw()
-    World:draw()
-end
-
-local past_dt = 0
-function love.update(dt)
-    print(getFPS())
-    World:update(dt)
-end
+Gamestate.switch(Menu)

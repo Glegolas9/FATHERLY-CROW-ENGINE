@@ -8,6 +8,8 @@ local world  = {
     instances = {};
 }
 
+world.__index = world
+
 -- [[ SYSTEM MANAGEMENT ]]
 function world:clearSystems()
     local systems = self.systems
@@ -62,12 +64,21 @@ function world:create(object, ...)
     return instance
 end
 
-function world:delete()
-
+function world:destroy_instance(inst)
+    for i, system in pairs(systems) do
+        if system.destroy and system:match(inst) then
+            system:destroy(inst)
+        end
+    end
 end
 
-function world:clear()
-
+function world:clear_instances()
+    local instances = self.instances
+    for i = #instances, 1, -1 do
+        local inst = instances[i]
+        self:destroy_instance(inst)
+        t_remove(instances, i)
+    end
 end
 
 -- [[ RENDER ]]
@@ -120,6 +131,14 @@ function world:update(dt)
             inst.loaded = true
         end
     end
+end
+
+function world.new(data)
+    local data     = data or {}
+    data.systems   = data.systems or {}
+    data.instances = data.instances or {}
+
+    return setmetatable(data, world)
 end
 
 return world
